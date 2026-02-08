@@ -1,30 +1,29 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:demo_hdfc/main.dart';
+import 'package:demo_hdfc/app/app.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('Demo HDFC app loads product list and navigates to detail page',
+      (WidgetTester tester) async {
+
+    // 1️⃣ Load app
     await tester.pumpWidget(const MyApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // 2️⃣ Verify AppBar title
+    expect(find.text('HDFC Products'), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // 3️⃣ Verify product list items exist
+    expect(find.text('HDFC Credit Card'), findsOneWidget);
+    expect(find.text('HDFC Home Loan'), findsOneWidget);
+    expect(find.text('HDFC Personal Loan'), findsOneWidget);
+    expect(find.text('HDFC Debit Card'), findsOneWidget);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // 4️⃣ Tap on first product
+    await tester.tap(find.text('HDFC Credit Card'));
+    await tester.pumpAndSettle();
+
+    // 5️⃣ Verify navigation to detail page
+    expect(find.text('Charges:'), findsOneWidget);
+    expect(find.text('₹499'), findsOneWidget);
   });
 }
